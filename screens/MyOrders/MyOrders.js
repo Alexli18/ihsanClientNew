@@ -104,13 +104,20 @@ export default class MyOrders extends Component {
 
 
       renderTableData(data){
+        let { isBarber } = this.state;
         console.log(data)
           return data.map((item, idx)=>{
+            console.log(item);
               return(
                 <DataTable.Row key={idx}>
                     <DataTable.Cell>{item.date.split('T')[0]}</DataTable.Cell>
                     <DataTable.Cell>{item.hours[0]}</DataTable.Cell>
-                    <DataTable.Cell>{item.userDetail[0].name}</DataTable.Cell>
+                    {
+                      isBarber && <DataTable.Cell>{item.userDetail[0].name}</DataTable.Cell>
+                    }
+                    {
+                      isBarber && <DataTable.Cell>{item.userDetail[0].name}</DataTable.Cell>
+                    }
                     <DataTable.Cell onPress ={()=> this.deleteOrder(item._id) }>
 
                       <View style ={{border: '1px solid black', borderRadius: 5}}>
@@ -212,6 +219,12 @@ export default class MyOrders extends Component {
                       
                       <DataTable.Title>Order date</DataTable.Title>
                       <DataTable.Title>Order hour</DataTable.Title>
+                      {
+                        isBarber && <DataTable.Title>Client name</DataTable.Title>
+                      }
+                      {
+                        isBarber && <DataTable.Title>Client phone</DataTable.Title>
+                      }
                       <DataTable.Title>Action</DataTable.Title>
                     </DataTable.Header>
 
@@ -227,16 +240,19 @@ export default class MyOrders extends Component {
                     Add
                   </Text>
                 </TouchableOpacity> }
-                <ModalDateTimePicker 
-                    show = {show}
-                    func = {this.toggleModal.bind(this)}
-                    service = { service[0] }
-                    // avatar = { avatar }
-                    barberId = { service[0].barberId }    
-                    navigation = { this.props.navigation }
-                    isBarber = { this.state.isBarber }
-                    token = { this.state.token }
-                />
+
+                {
+                  isBarber && <ModalDateTimePicker 
+                  show = {show}
+                  func = {this.toggleModal.bind(this)}
+                  service = { service[0] }
+                  // avatar = { avatar }
+                  barberId = { service[0].barberId }    
+                  navigation = { this.props.navigation }
+                  isBarber = { this.state.isBarber }
+                  token = { this.state.token }
+              />
+                }
                 {
                   this.renderAddUserModal()
                 }
